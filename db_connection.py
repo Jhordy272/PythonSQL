@@ -12,17 +12,24 @@ class DatabaseConnection:
         self.cursor = None
 
     def connect(self):
-        self.connection = pymysql.connect(
-            host=self.host,
-            user=self.user,
-            password=self.password,
-            db=self.db
-        )
-        self.cursor = self.connection.cursor()
+        try:
+            self.connection = pymysql.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                db=self.db
+            )
+            self.cursor = self.connection.cursor()
+        except Exception as e:
+            print(f'Error connecting: {e}')
 
     def execute_query(self, query):
-        self.cursor.execute(query)
-        return self.cursor.fetchall()
+        try:
+            self.cursor.execute(query)
+            return self.cursor.fetchall()
+        except Exception as e:
+            print(f'Error executing query: {e}')
+            return None
 
     def close(self):
         if self.cursor:

@@ -1,18 +1,12 @@
-import pymysql
-import os
+from db_connection import DatabaseConnection
 
-HOST = os.environ.get('DB_HOST')
-USER = os.environ.get('DB_USER')
-PASSWORD = os.environ.get('DB_PASSWORD')
-DB = os.environ.get('DB_DB')
+def main():
+    db = DatabaseConnection()
+    db.connect()
+    results = db.execute_query('SELECT * FROM users')
+    db.close()
+    print(results)
 
-connection = pymysql.connect(host=HOST,user=USER,password=PASSWORD,db=DB)
 
-cursor = connection.cursor()
-
-cursor.execute('SELECT * FROM users')
-
-for row in cursor:
-    print(row)
-
-connection.close()
+if __name__ == "__main__":
+    main()
